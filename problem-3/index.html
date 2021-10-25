@@ -1,0 +1,66 @@
+<html>
+<body>
+<h2>Fridge Items</h2>
+<table>
+    <thead>
+    <td>
+        <b>Item</b>
+    </td>
+    <td>
+        <b>Count</b>
+    </td>
+    <td>
+        <b>Remove</b>
+    </td>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<br/>
+<input type="text" id="text-field">
+<button onClick="add(event)">Add</button>
+</body>
+<script src="problem3-solution-osama-abdullah.js"></script>
+<script>
+    const fridgeList = document.getElementsByTagName('tbody')[0];
+    const textField = document.getElementById('text-field');
+
+    function renderFridgeItems() {
+        fridgeList.innerHTML = '';
+        for (const key in data.fridge) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${key}</td>
+                             <td>${data.fridge[key]}</td>
+                             <td><button onClick="remove(event)">X</button></td>`;
+            row.setAttribute('id', key);
+            fridgeList.appendChild(row);
+        }
+    }
+
+    window.onload = renderFridgeItems;
+
+    function remove(event) {
+        event.target.parentNode.parentNode.style.display = 'none';
+        removeItem(event.target.parentNode.parentNode.id);
+    }
+
+    function add(event) {
+        if (!textField.value) return alert('please enter a valid item');
+        let item, quantity;
+        [item, quantity] = textField.value.split(' ');
+        quantity = parseInt(quantity);
+        if (!item.match(/^[A-Z]/i)) return alert('item name must start with a letter');
+        if (!quantity) return alert('please enter a valid quantity');
+
+        addItem(item, quantity);
+        renderFridgeItems();
+
+        textField.value = '';
+    }
+</script>
+<style>
+    td {
+        padding-right: 50px;
+    }
+</style>
+</html>
